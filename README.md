@@ -55,7 +55,7 @@ cp .env.example .env.local
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the app.
+Open [http://localhost:20903](http://localhost:20903) to see the app.
 
 ### Environment Variables
 
@@ -139,6 +139,7 @@ dotfiles-visualizer/
 Returns the current dotfiles configuration from GitHub.
 
 **Response:**
+
 ```json
 {
   "config": {
@@ -156,9 +157,11 @@ Returns the current dotfiles configuration from GitHub.
 Returns file mappings for a specific platform.
 
 **Query Params:**
+
 - `platform`: `linux` | `darwin` | `windows` (default: `linux`)
 
 **Response:**
+
 ```json
 {
   "files": [
@@ -182,11 +185,11 @@ Returns file mappings for a specific platform.
 
 The app understands chezmoi's naming conventions:
 
-| Source File | Deployed To | Notes |
-|-------------|-------------|-------|
-| `dot_bashrc` | `~/.bashrc` | `dot_` prefix becomes `.` |
-| `dot_config/shell/common.sh.tmpl` | `~/.config/shell/common.sh` | `.tmpl` files are templates |
-| `executable_script` | `~/bin/script` | `executable_` prefix marks executables |
+| Source File                       | Deployed To                 | Notes                                  |
+| --------------------------------- | --------------------------- | -------------------------------------- |
+| `dot_bashrc`                      | `~/.bashrc`                 | `dot_` prefix becomes `.`              |
+| `dot_config/shell/common.sh.tmpl` | `~/.config/shell/common.sh` | `.tmpl` files are templates            |
+| `executable_script`               | `~/bin/script`              | `executable_` prefix marks executables |
 
 ### Platform Filtering
 

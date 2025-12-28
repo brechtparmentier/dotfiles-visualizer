@@ -1,0 +1,78 @@
+{
+  "project": "dotfiles-visualizer",
+  "generated": "2025-12-28T13:39:16.509078",
+  "standard": {
+    "frontend": 20903,
+    "backend": 20904,
+    "api": 20905,
+    "docs": 20906
+  },
+  "docker_production": {
+    "frontend": 42728,
+    "backend": 42729,
+    "api": 42730,
+    "docs": 42731
+  },
+  "docker_development": {
+    "frontend": 34004,
+    "backend": 34005,
+    "api": 34006,
+    "docs": 34007
+  },
+  "docker_compose": {
+    "standard": {
+      "frontend": {
+        "host": 20903,
+        "container": 20903
+      },
+      "backend": {
+        "host": 20904,
+        "container": 20904
+      },
+      "api": {
+        "host": 20905,
+        "container": 20905
+      },
+      "docs": {
+        "host": 20906,
+        "container": 20906
+      }
+    },
+    "production": {
+      "frontend": {
+        "host": 42728,
+        "container": 20903
+      },
+      "backend": {
+        "host": 42729,
+        "container": 20904
+      },
+      "api": {
+        "host": 42730,
+        "container": 20905
+      },
+      "docs": {
+        "host": 42731,
+        "container": 20906
+      }
+    },
+    "development": {
+      "frontend": {
+        "host": 34004,
+        "container": 20903
+      },
+      "backend": {
+        "host": 34005,
+        "container": 20904
+      },
+      "api": {
+        "host": 34006,
+        "container": 20905
+      },
+      "docs": {
+        "host": 34007,
+        "container": 20906
+      }
+    }
+  }
+}
