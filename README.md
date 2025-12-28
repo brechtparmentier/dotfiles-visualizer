@@ -4,21 +4,23 @@ Interactive web application for visualizing Brecht's dotfiles repository structu
 
 ## Features
 
-### ✅ Implemented (Phase 1 & 2)
+### ✅ Implemented (Phase 1-3)
 
 - 📊 **Dashboard** - Module status overview with statistics
 - 📂 **File Explorer** - Interactive file tree with platform switching
+- 🎮 **Module Simulator** - Toggle modules and see deployment changes in real-time
 - 🌍 **Platform Awareness** - Toggle between Linux, macOS, and Windows
 - 🔍 **File Search** - Filter files by name in real-time
-- 🎨 **Dark Mode** - Full dark mode support
 - 📝 **File Details** - View source paths, deployment paths, and metadata
+- 🔄 **Live Diff Preview** - See exactly which files are added/removed when toggling modules
 
-### 🚧 Coming Soon (Phase 3-5)
+### 🚧 Coming Soon (Phase 4-5)
 
-- 🎮 Module Simulator - Toggle modules and see deployment changes
 - 🔖 Alias Catalog - Searchable database of all aliases and functions
+- 🌙 Dark Mode - Full dark mode support
 - 🔄 Auto-sync - GitHub webhooks for automatic updates
 - 📋 Copy Commands - Click-to-copy for all commands
+- ⌨️ Command Palette - Quick search and navigation
 
 ## Tech Stack
 
