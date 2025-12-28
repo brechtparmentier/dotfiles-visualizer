@@ -111,6 +111,20 @@ export class IgnoreParser {
       }
     }
 
+    // Handle: not .modules.X.Y (nested properties like .modules.shell.zsh_extras)
+    if (condition.includes('not .modules.') && !condition.includes('.enabled')) {
+      const propertyMatch = condition.match(/not\s+\.modules\.(\w+)\.(\w+)/);
+      if (propertyMatch) {
+        const moduleName = propertyMatch[1];
+        const propertyName = propertyMatch[2];
+        const moduleConfig = config.data.modules[moduleName];
+        if (moduleConfig && typeof moduleConfig === 'object') {
+          return !((moduleConfig as any)[propertyName]);
+        }
+        return true;
+      }
+    }
+
     // Handle: not .modules.X.enabled
     if (condition.includes('not .modules.')) {
       const moduleMatch = condition.match(/not\s+\.modules\.(\w+)\.enabled/);
@@ -118,6 +132,20 @@ export class IgnoreParser {
         const moduleName = moduleMatch[1];
         const moduleConfig = config.data.modules[moduleName];
         return !(moduleConfig && moduleConfig.enabled);
+      }
+    }
+
+    // Handle: .modules.X.Y (nested properties)
+    if (condition.includes('.modules.') && !condition.includes('.enabled')) {
+      const propertyMatch = condition.match(/\.modules\.(\w+)\.(\w+)/);
+      if (propertyMatch) {
+        const moduleName = propertyMatch[1];
+        const propertyName = propertyMatch[2];
+        const moduleConfig = config.data.modules[moduleName];
+        if (moduleConfig && typeof moduleConfig === 'object') {
+          return !!((moduleConfig as any)[propertyName]);
+        }
+        return false;
       }
     }
 

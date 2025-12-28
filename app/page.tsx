@@ -184,6 +184,12 @@ export default function Dashboard() {
         >
           📂 Browse Files
         </a>
+        <a
+          href="/simulator"
+          className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-medium inline-block"
+        >
+          🎮 Module Simulator
+        </a>
       </div>
     </div>
   );

@@ -132,6 +132,22 @@ export interface AliasesResponse {
   total: number;
 }
 
+export interface SimulateRequest {
+  moduleChanges: Record<string, boolean>;
+  platform?: Platform;
+}
+
+export interface SimulateResponse {
+  filesAdded: FileMapping[];
+  filesRemoved: FileMapping[];
+  aliasesAdded: string[];
+  aliasesRemoved: string[];
+  totalFilesBefore: number;
+  totalFilesAfter: number;
+  platform: Platform;
+  moduleChanges: Record<string, boolean>;
+}
+
 /**
  * Module dependencies
  * Maps module ID to required parent modules
