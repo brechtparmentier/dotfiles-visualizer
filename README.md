@@ -1,36 +1,215 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dotfiles Visualizer
+
+Interactive web application for visualizing Brecht's dotfiles repository structure and configuration.
+
+## Features
+
+### ✅ Implemented (Phase 1 & 2)
+
+- 📊 **Dashboard** - Module status overview with statistics
+- 📂 **File Explorer** - Interactive file tree with platform switching
+- 🌍 **Platform Awareness** - Toggle between Linux, macOS, and Windows
+- 🔍 **File Search** - Filter files by name in real-time
+- 🎨 **Dark Mode** - Full dark mode support
+- 📝 **File Details** - View source paths, deployment paths, and metadata
+
+### 🚧 Coming Soon (Phase 3-5)
+
+- 🎮 Module Simulator - Toggle modules and see deployment changes
+- 🔖 Alias Catalog - Searchable database of all aliases and functions
+- 🔄 Auto-sync - GitHub webhooks for automatic updates
+- 📋 Copy Commands - Click-to-copy for all commands
+
+## Tech Stack
+
+- **Frontend**: React + TypeScript + Next.js 14
+- **Styling**: TailwindCSS
+- **State**: Zustand
+- **API**: Next.js API Routes (Serverless Functions)
+- **Data Source**: GitHub API
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ or pnpm
+- GitHub Personal Access Token (optional, for higher API rate limits)
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Clone the repository
+git clone https://github.com/brechtparmentier/dotfiles-visualizer.git
+cd dotfiles-visualizer
+
+# Install dependencies
+pnpm install
+
+# Copy environment variables
+cp .env.example .env.local
+
+# Add your GitHub token (optional but recommended)
+# Edit .env.local and add your GITHUB_TOKEN
+
+# Run development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file with:
 
-## Learn More
+```env
+# Optional: GitHub Personal Access Token for higher API rate limits
+GITHUB_TOKEN=ghp_your_token_here
 
-To learn more about Next.js, take a look at the following resources:
+# Optional: Override dotfiles repository
+# DOTFILES_OWNER=brechtparmentier
+# DOTFILES_REPO=dotfiles
+# DOTFILES_BRANCH=main
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Why you need a GitHub token:**
+Without a token, GitHub API limits you to 60 requests/hour. With a token, you get 5000 requests/hour. Get one at: https://github.com/settings/tokens
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development
 
-## Deploy on Vercel
+```bash
+# Run dev server
+pnpm dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Build for production
+pnpm build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Start production server
+pnpm start
+
+# Lint code
+pnpm lint
+```
+
+## Deployment
+
+This app is designed to be deployed on [Vercel](https://vercel.com):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/brechtparmentier/dotfiles-visualizer)
+
+### Manual Deployment
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
+## Project Structure
+
+```
+dotfiles-visualizer/
+├── app/
+│   ├── api/              # API routes
+│   │   ├── config/       # GET /api/config
+│   │   └── files/        # GET /api/files
+│   ├── files/            # File Explorer page
+│   └── page.tsx          # Dashboard page
+├── components/
+│   ├── ModuleCard.tsx    # Module card component
+│   ├── PlatformSwitcher.tsx  # Platform toggle
+│   └── FileTree.tsx      # File tree component
+├── lib/
+│   ├── parsers/
+│   │   ├── YAMLParser.ts     # .chezmoi.yaml parser
+│   │   ├── FileMapper.ts     # Chezmoi file mapping
+│   │   └── IgnoreParser.ts   # .chezmoiignore parser
+│   ├── services/
+│   │   └── GitHubService.ts  # GitHub API client
+│   ├── types.ts          # TypeScript types
+│   └── utils.ts          # Utility functions
+└── public/               # Static assets
+```
+
+## API Endpoints
+
+### GET /api/config
+
+Returns the current dotfiles configuration from GitHub.
+
+**Response:**
+```json
+{
+  "config": {
+    "data": {
+      "gitUser": { "name": "...", "email": "..." },
+      "modules": { ... }
+    }
+  },
+  "lastUpdated": "2025-12-28T10:00:00Z"
+}
+```
+
+### GET /api/files?platform=linux
+
+Returns file mappings for a specific platform.
+
+**Query Params:**
+- `platform`: `linux` | `darwin` | `windows` (default: `linux`)
+
+**Response:**
+```json
+{
+  "files": [
+    {
+      "sourcePath": "dot_bashrc",
+      "deployPath": "~/.bashrc",
+      "isTemplate": false,
+      "isExecutable": false,
+      "requiredModules": ["shell"],
+      "platforms": ["linux", "darwin"]
+    }
+  ],
+  "totalFiles": 12,
+  "platform": "linux"
+}
+```
+
+## How It Works
+
+### File Mapping
+
+The app understands chezmoi's naming conventions:
+
+| Source File | Deployed To | Notes |
+|-------------|-------------|-------|
+| `dot_bashrc` | `~/.bashrc` | `dot_` prefix becomes `.` |
+| `dot_config/shell/common.sh.tmpl` | `~/.config/shell/common.sh` | `.tmpl` files are templates |
+| `executable_script` | `~/bin/script` | `executable_` prefix marks executables |
+
+### Platform Filtering
+
+The `.chezmoiignore` file uses Go template conditionals:
+
+```yaml
+{{- if eq .chezmoi.os "windows" }}
+# Ignore Unix files on Windows
+.config/**
+.bashrc
+{{- else }}
+# Ignore Windows files on Unix
+PowerShell/**
+{{- end }}
+```
+
+The app parses these conditionals and shows the correct files for each platform.
+
+## License
+
+MIT
+
+## Related
+
+- [Dotfiles Repository](https://github.com/brechtparmentier/dotfiles)
+- [chezmoi](https://www.chezmoi.io/)
